@@ -1,0 +1,54 @@
+name: Rust
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: install cross-compiling deps
+      run: |
+        sudo apt-get -y update
+        sudo apt-get install -y mingw-w64
+        mkdir -p ~/.cargo
+        wget "https://gist.githubusercontent.com/duckfromdiscord/d759952442a5550e546e7f6c45161729/raw/7e41b0173cde79caf016204e19a9e9a4c6f48fc6/config" -O ~/.cargo/config
+    - name: Setup toolchain
+      uses: dtolnay/rust-toolchain@master
+      with:
+          toolchain: nightly
+          targets: wasm32-unknown-unknown x86_64-pc-windows-gnu
+          components: rust-src
+    - uses: jetli/trunk-action@v0.4.0
+      with:
+          version: 'v0.16.0'
+    - uses: actions/checkout@v3
+    - name: Build
+      run: trunk build --release
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: wasmrelease
+        path: /home/runner/work/pong-frontend/pong-frontend/dist
+    - name: 'Deploy to Netlify'
+      uses: jsmrcaga/action-netlify-deploy@v1.1.0
+      with:
+          install_command: "echo skip installing dependencies"
+          use_nvm: false
+          NETLIFY_AUTH_TOKEN: ${{ secrets.MY_TOKEN_SECRET }}
+          NETLIFY_DEPLOY_TO_PROD: true
+          build_directory: dist
+          NETLIFY_SITE_ID: '8af44117-ef38-4a01-bfec-c29ff3bd720f'
+    - name: Build for Windows
+      run: cargo build --release --target x86_64-pc-windows-gnu
+    - name: Upload a Windows Build Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: winrelease
+        path: /home/runner/work/pong-frontend/pong-frontend/target/x86_64-pc-windows-gnu/release/pong-frontend.exe

@@ -1736,18 +1736,18 @@ dependencies = [
 ]
 
 [[package]]
-name = "pong-frontend"
-version = "0.1.0"
-dependencies = [
- "notan",
- "pong_core",
-]
-
-[[package]]
 name = "pong_core"
 version = "0.1.0"
 dependencies = [
  "rand",
+]
+
+[[package]]
+name = "pong_frontend"
+version = "0.1.0"
+dependencies = [
+ "notan",
+ "pong_core",
 ]
 
 [[package]]

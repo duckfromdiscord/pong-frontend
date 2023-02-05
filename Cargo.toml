@@ -1,5 +1,5 @@
 [package]
-name = "pong-frontend"
+name = "pong_frontend"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,4 +7,11 @@ edition = "2021"
 
 [dependencies]
 notan = "0.9.1"
-pong_core = {path = "../pong-core"}
+pong_core = {git = "https://github.com/duckfromdiscord/pong-core.git" }
+
+[profile.release]
+opt-level = 'z'
+lto = true
+codegen-units = 1
+panic = 'abort'
+strip = "debuginfo" # strip true does NOT work with wasm.
