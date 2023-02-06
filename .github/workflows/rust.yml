@@ -51,4 +51,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: winrelease
-        path: /home/runner/work/pong-frontend/pong-frontend/target/x86_64-pc-windows-gnu/release/pong-frontend.exe
+        path: /home/runner/work/pong-frontend/pong-frontend/target/x86_64-pc-windows-gnu/release/pong_frontend.exe
