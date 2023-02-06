@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 notan = "0.9.1"
 pong_core = {git = "https://github.com/duckfromdiscord/pong-core.git" }
+libmath = "0.2.1"
 
 [profile.release]
 opt-level = 'z'
